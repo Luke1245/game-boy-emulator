@@ -1,0 +1,25 @@
+name: build-test
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6 
+
+      - run: cmake -S . -B build
+
+      - run: cmake --build build
+
+      - run: ctest --test-dir build --output-on-failure
+
+
