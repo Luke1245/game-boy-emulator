@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.50)
+cmake_minimum_required(VERSION 3.20)
 
 project(gb-emulator
     DESCRIPTION "C Game Boy Emulator" 
