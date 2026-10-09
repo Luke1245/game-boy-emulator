@@ -1,3 +1,54 @@
-int cpu(void) {
-    return 0;
+#include "../include/cpu.h"
+
+#include <stdbool.h>
+#include <stdint.h>
+
+bool initialise_gameboy(gb_t* gameboy) {
+    registers_t init_registers = {0};
+
+    *gameboy = (gb_t){
+        .registers = init_registers,
+    };
+
+    return true;
+};
+
+void combine_registers(uint8_t* registers[], combreg_t reg, gb_t* gameboy) {
+    // Gameboy treats two 8-bit registers as one 16-bit register for some
+    // operations
+    switch (reg) {
+        case AF:
+            registers[0] = &gameboy->registers.a;
+            registers[1] = &gameboy->registers.f;
+            break;
+        case BC:
+            registers[0] = &gameboy->registers.b;
+            registers[1] = &gameboy->registers.c;
+            break;
+        case DE:
+            registers[0] = &gameboy->registers.d;
+            registers[1] = &gameboy->registers.e;
+            break;
+        case HL:
+            registers[0] = &gameboy->registers.h;
+            registers[1] = &gameboy->registers.l;
+            break;
+    }
 }
+
+uint16_t get_combined_register(combreg_t reg, gb_t* gameboy) {
+    uint8_t* registers[] = {nullptr, nullptr};
+    combine_registers(registers, reg, gameboy);
+
+    return (*registers[0] << 8) | *registers[1];
+};
+
+bool set_combined_register(combreg_t reg, gb_t* gameboy, uint16_t value) {
+    uint8_t* registers[] = {nullptr, nullptr};
+    combine_registers(registers, reg, gameboy);
+
+    *registers[0] = (value & 0xFF00) >> 8;
+    *registers[1] = (value & 0x00FF);
+
+    return true;
+};
