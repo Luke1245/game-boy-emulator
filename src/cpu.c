@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <stddef.h>
 
 bool initialise_gameboy(gb_t* gameboy) {
     registers_t init_registers = {0};
@@ -37,14 +38,14 @@ void combine_registers(uint8_t* registers[], combreg_t reg, gb_t* gameboy) {
 }
 
 uint16_t get_combined_register(combreg_t reg, gb_t* gameboy) {
-    uint8_t* registers[] = {nullptr, nullptr};
+    uint8_t* registers[] = {NULL, NULL};
     combine_registers(registers, reg, gameboy);
 
     return (*registers[0] << 8) | *registers[1];
 };
 
 bool set_combined_register(combreg_t reg, gb_t* gameboy, uint16_t value) {
-    uint8_t* registers[] = {nullptr, nullptr};
+    uint8_t* registers[] = {NULL, NULL};
     combine_registers(registers, reg, gameboy);
 
     *registers[0] = (value & 0xFF00) >> 8;

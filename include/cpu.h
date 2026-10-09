@@ -2,6 +2,7 @@
 #define CPU_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef enum { AF, BC, DE, HL } combreg_t;
 
