@@ -1,8 +1,13 @@
 #ifndef CPU_H
 #define CPU_H
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
+
+#define FLAG_ZERO (1 << 7)
+#define FLAG_SUB (1 << 6)
+#define FLAG_HALF (1 << 5)
+#define FLAG_CARRY (1 << 4)
 
 typedef enum { AF, BC, DE, HL } combreg_t;
 
@@ -26,5 +31,7 @@ void fetch_combined_registers(uint8_t registers[], combreg_t reg,
                               gb_t* gameboy);
 uint16_t get_combined_register(combreg_t reg, gb_t* gameboy);
 bool set_combined_register(combreg_t reg, gb_t* gameboy, uint16_t value);
+void set_flag_register(uint8_t mask, gb_t* gameboy);
+void clear_flag_register(uint8_t mask, gb_t* gameboy);
 
 #endif

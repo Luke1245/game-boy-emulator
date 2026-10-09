@@ -1,8 +1,8 @@
 #include "../include/cpu.h"
 
 #include <stdbool.h>
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 bool initialise_gameboy(gb_t* gameboy) {
     registers_t init_registers = {0};
@@ -53,3 +53,13 @@ bool set_combined_register(combreg_t reg, gb_t* gameboy, uint16_t value) {
 
     return true;
 };
+
+void set_flag_register(uint8_t mask, gb_t* gameboy) {
+    gameboy->registers.f |= mask;
+    // Lower nibble is always zero
+    gameboy->registers.f &= 0xF0;
+};
+
+void clear_flag_register(uint8_t mask, gb_t* gameboy) {
+    gameboy->registers.f &= ~mask;
+}
