@@ -27,7 +27,7 @@ typedef struct {
 } gb_t;
 
 bool initialise_gameboy(gb_t* gameboy);
-void fetch_combined_registers(uint8_t registers[], combreg_t reg,
+void combine_registers(uint8_t* registers[], combreg_t reg,
                               gb_t* gameboy);
 uint16_t get_combined_register(combreg_t reg, gb_t* gameboy);
 bool set_combined_register(combreg_t reg, gb_t* gameboy, uint16_t value);
