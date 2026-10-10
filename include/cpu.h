@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+// Flag register f, top nibble handles flags, bottom nibble always 0
+// use these masks to set the correct bit in the register via bitwise OR
 #define FLAG_ZERO (1 << 7)
 #define FLAG_SUB (1 << 6)
 #define FLAG_HALF (1 << 5)
