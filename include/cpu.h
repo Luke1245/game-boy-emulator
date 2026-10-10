@@ -24,11 +24,12 @@ typedef struct {
 
 typedef struct {
     registers_t registers;
+    uint16_t pc;
+    uint8_t memory[0xFFFF];
 } gb_t;
 
 bool initialise_gameboy(gb_t* gameboy);
-void combine_registers(uint8_t* registers[], combreg_t reg,
-                              gb_t* gameboy);
+void combine_registers(uint8_t* registers[], combreg_t reg, gb_t* gameboy);
 uint16_t get_combined_register(combreg_t reg, gb_t* gameboy);
 bool set_combined_register(combreg_t reg, gb_t* gameboy, uint16_t value);
 void set_flag_register(uint8_t mask, gb_t* gameboy);
