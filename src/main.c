@@ -21,8 +21,6 @@ int main(void) {
         return EXIT_FAILURE;
     }
 
-    clear_screen(&sdl);
-
     bool running = true;
     while (running) {
         SDL_Event event;
