@@ -12,7 +12,7 @@ bool initialise_gameboy(gb_t* gameboy) {
     };
 
     return true;
-};
+}
 
 void combine_registers(uint8_t* registers[], combreg_t reg, gb_t* gameboy) {
     // Gameboy treats two 8-bit registers as one 16-bit register for some
@@ -42,7 +42,7 @@ uint16_t get_combined_register(combreg_t reg, gb_t* gameboy) {
     combine_registers(registers, reg, gameboy);
 
     return (*registers[0] << 8) | *registers[1];
-};
+}
 
 bool set_combined_register(combreg_t reg, gb_t* gameboy, uint16_t value) {
     uint8_t* registers[] = {NULL, NULL};
@@ -52,13 +52,13 @@ bool set_combined_register(combreg_t reg, gb_t* gameboy, uint16_t value) {
     *registers[1] = (value & 0x00FF);
 
     return true;
-};
+}
 
 void set_flag_register(uint8_t mask, gb_t* gameboy) {
     gameboy->registers.f |= mask;
     // Lower nibble is always zero
     gameboy->registers.f &= 0xF0;
-};
+}
 
 void clear_flag_register(uint8_t mask, gb_t* gameboy) {
     gameboy->registers.f &= ~mask;
