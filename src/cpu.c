@@ -3,14 +3,10 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 
 bool initialise_gameboy(gb_t* gameboy) {
-    registers_t init_registers = {0};
-
-    *gameboy = (gb_t){
-        .registers = init_registers,
-    };
-
+    memset(gameboy, 0, sizeof *gameboy);
     return true;
 }
 

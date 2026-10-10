@@ -32,6 +32,8 @@ FetchContent_MakeAvailable(SDL3)
 add_executable(gameboy
     src/main.c
     src/cpu.c
+    src/config.c
+    src/platform.c
 )
 
 target_include_directories(gameboy
