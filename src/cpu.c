@@ -37,6 +37,9 @@ uint16_t get_combined_register(combreg_t reg, gb_t* gameboy) {
     uint8_t* registers[] = {NULL, NULL};
     combine_registers(registers, reg, gameboy);
 
+    // Combine two registers by shifting first registers 8-bits to high bit of
+    // 16-bit int then ORing (combines) with the second registers 8-bits to put
+    // them in the 16-bit low bits
     return (*registers[0] << 8) | *registers[1];
 }
 
@@ -44,18 +47,23 @@ bool set_combined_register(combreg_t reg, gb_t* gameboy, uint16_t value) {
     uint8_t* registers[] = {NULL, NULL};
     combine_registers(registers, reg, gameboy);
 
+    // Mask off lower 8 bits then shift right to convert to 8-bit int
     *registers[0] = (value & 0xFF00) >> 8;
+    // Leading 0s not needed but matches form of above line. Mask off high 8
+    // bits
     *registers[1] = (value & 0x00FF);
 
     return true;
 }
 
 void set_flag_register(uint8_t mask, gb_t* gameboy) {
+    // Use OR to set the correct flag bits without overwriting other flags
     gameboy->registers.f |= mask;
     // Lower nibble is always zero
     gameboy->registers.f &= 0xF0;
 }
 
 void clear_flag_register(uint8_t mask, gb_t* gameboy) {
+    // Negate mask to clear supplied flags
     gameboy->registers.f &= ~mask;
 }
