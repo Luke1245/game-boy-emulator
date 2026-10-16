@@ -10,6 +10,7 @@ int main(void) {
     // Use Blargg's CPU instruction test ROM
     bool success = initialise_gameboy(&gameboy, "cpu_instrs.gb");
     assert(success);
+    (void)success;
 
     // TODO: Tests for loading ROM
     // Boot ROM load
