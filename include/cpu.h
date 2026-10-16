@@ -28,6 +28,7 @@ typedef struct {
     registers_t registers;
     uint16_t pc;
     uint8_t memory[0xFFFF];
+    char* rom_name;
 } gb_t;
 
 bool initialise_gameboy(gb_t* gameboy);

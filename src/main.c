@@ -6,12 +6,13 @@
 #include "../include/cpu.h"
 #include "../include/platform.h"
 
-int main(void) {
+int main(int argc, char* argv[]) {
     gb_t gameboy = {0};
     config_t config = {0};
     sdl_t sdl = {0};
 
-    set_config(&config);
+    char* rom_name = NULL;
+    set_config(&config, &rom_name, argc, argv);
 
     if (!initialise_sdl(&sdl, config)) {
         return EXIT_FAILURE;

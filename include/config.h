@@ -9,6 +9,6 @@ typedef struct {
     uint32_t scale_factor;
 } config_t;
 
-void set_config(config_t* config);
+void set_config(config_t* config, char** rom_name, int argc, char* argv[]);
 
 #endif
