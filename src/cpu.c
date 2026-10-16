@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
-bool initialise_gameboy(gb_t* gameboy) {
+bool initialise_gameboy(gb_t* gameboy, char* rom_name) {
     memset(gameboy, 0, sizeof *gameboy);
 
     // Embed boot rom into file, covers the first 256 bytes of memory
@@ -35,6 +35,37 @@ bool initialise_gameboy(gb_t* gameboy) {
         0x3e, 0x01, 0xe0, 0x50};
 
     memcpy(gameboy->memory, boot_rom, sizeof(boot_rom));
+    gameboy->rom_name = rom_name;
+
+    // Could be done with just passing gameboy but specifying rom_name arg makes
+    // it more readable
+    if (!load_rom(gameboy, gameboy->rom_name)) {
+        return false;
+    }
+
+    return true;
+}
+
+bool load_rom(gb_t* gameboy, char* rom_name) {
+    FILE* file_pointer = fopen(rom_name, "rb");
+
+    if (file_pointer == NULL) {
+        printf("File not found\n");
+        return false;
+    }
+
+    fseek(file_pointer, 0L, SEEK_END);
+    long size = ftell(file_pointer);
+    fseek(file_pointer, 0L, SEEK_SET);
+
+    if (!fread(gameboy->memory + 256, size, 1, file_pointer)) {
+        printf("Unable to read ROM into memory\n");
+        return false;
+    }
+
+    fclose(file_pointer);
+
+    printf("ROM loaded\n");
 
     return true;
 }

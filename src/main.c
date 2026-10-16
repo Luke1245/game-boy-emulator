@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    if (!initialise_gameboy(&gameboy)) {
+    if (!initialise_gameboy(&gameboy, rom_name)) {
         return EXIT_FAILURE;
     }
 

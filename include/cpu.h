@@ -31,7 +31,8 @@ typedef struct {
     char* rom_name;
 } gb_t;
 
-bool initialise_gameboy(gb_t* gameboy);
+bool initialise_gameboy(gb_t* gameboy, char* rom_name);
+bool load_rom(gb_t* gameboy, char* rom_name);
 void combine_registers(uint8_t* registers[], combreg_t reg, gb_t* gameboy);
 uint16_t get_combined_register(combreg_t reg, gb_t* gameboy);
 bool set_combined_register(combreg_t reg, gb_t* gameboy, uint16_t value);

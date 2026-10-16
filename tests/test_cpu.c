@@ -6,7 +6,8 @@
 
 int main(void) {
     gb_t gameboy;
-    initialise_gameboy(&gameboy);
+    // Use Blargg's CPU instruction test ROM
+    initialise_gameboy(&gameboy, "cpu_instrs.gb");
 
     // Tests for combined register functions
     // Set
