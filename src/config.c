@@ -1,20 +1,21 @@
 #include "../include/config.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-void set_config(config_t* config, char** rom_name, int argc, char* argv[]) {
+bool set_config(config_t* config, char** rom_name, int argc, char* argv[]) {
+    if (argc < 2 || argv[1][0] == '-') {
+        fprintf(stderr, "Usage %s <rom_name> [-s scale_factor]\n", argv[0]);
+        return false;
+    }
+
     *config = (config_t){
         .window_width = 160,   // Original Gameboy Resolution
         .window_height = 144,  // Original Gameboy Resolution
         .scale_factor = 5,
     };
-
-    if (argc < 2 || argv[1][0] == '-') {
-        fprintf(stderr, "Usage %s <rom_name> [-s scale_factor]\n", argv[0]);
-        exit(EXIT_FAILURE);
-    }
 
     *rom_name = argv[1];
 
@@ -27,4 +28,6 @@ void set_config(config_t* config, char** rom_name, int argc, char* argv[]) {
                 break;
         }
     }
+
+    return true;
 }

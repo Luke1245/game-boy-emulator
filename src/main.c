@@ -12,7 +12,9 @@ int main(int argc, char* argv[]) {
     sdl_t sdl = {0};
 
     char* rom_name = NULL;
-    set_config(&config, &rom_name, argc, argv);
+    if (!set_config(&config, &rom_name, argc, argv)) {
+        return EXIT_FAILURE;
+    }
 
     if (!initialise_sdl(&sdl, config)) {
         return EXIT_FAILURE;
