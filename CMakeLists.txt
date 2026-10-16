@@ -66,4 +66,5 @@ target_link_libraries(test_cpu
 add_test(
     NAME cpu
     COMMAND test_cpu
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
