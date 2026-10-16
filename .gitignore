@@ -55,4 +55,5 @@ dkms.conf
 *.dwo
 
 # Build directory
-build
+Release
+Debug

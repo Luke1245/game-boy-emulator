@@ -1,6 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 typedef struct {
@@ -9,6 +10,6 @@ typedef struct {
     uint32_t scale_factor;
 } config_t;
 
-void set_config(config_t* config);
+bool set_config(config_t* config, char** rom_name, int argc, char* argv[]);
 
 #endif
