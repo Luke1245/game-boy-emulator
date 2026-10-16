@@ -1,9 +1,9 @@
 #include "../include/config.h"
 
+#include <getopt.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 bool set_config(config_t* config, char** rom_name, int argc, char* argv[]) {
     if (argc < 2 || argv[1][0] == '-') {
