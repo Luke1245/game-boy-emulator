@@ -34,6 +34,7 @@ bool initialise_gameboy(gb_t* gameboy, char* rom_name) {
         0xf5, 0x06, 0x19, 0x78, 0x86, 0x23, 0x05, 0x20, 0xfb, 0x86, 0x20, 0xfe,
         0x3e, 0x01, 0xe0, 0x50};
 
+    // TODO: FIX, boot ROM actually overwrites first 256 bytes of loaded ROM
     memcpy(gameboy->memory, boot_rom, sizeof(boot_rom));
     gameboy->rom_name = rom_name;
 
@@ -58,8 +59,10 @@ bool load_rom(gb_t* gameboy, char* rom_name) {
     long size = ftell(file_pointer);
     fseek(file_pointer, 0L, SEEK_SET);
 
+    // TODO: FIX, boot ROM actually overwrites first 256 bytes of loaded ROM
     if (!fread(gameboy->memory + 256, size, 1, file_pointer)) {
         printf("Unable to read ROM into memory\n");
+        fclose(file_pointer);
         return false;
     }
 
