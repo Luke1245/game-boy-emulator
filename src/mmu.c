@@ -33,7 +33,7 @@ bool load_rom(gb_t* gameboy, char* rom_name) {
 
 bool swap_memory(uint8_t input_block[], uint8_t output_block[], int size,
                  int location, gb_t* gameboy) {
-    memcpy(output_block, gameboy->memory + location, (size * sizeof(uint8_t)));
+    memcpy(output_block, gameboy->memory + location, size);
     memcpy(gameboy->memory + location, input_block, size);
 
     return true;
