@@ -46,10 +46,15 @@ bool initialise_gameboy(gb_t* gameboy, char* rom_name) {
     }
 
     uint8_t output_block[sizeof(boot_rom)] = {0};
-    swap_memory(boot_rom, output_block, sizeof(boot_rom), 0, gameboy);
+    if (!swap_memory(boot_rom, output_block, sizeof(boot_rom), 0, gameboy)) {
+        return false;
+    }
 
     uint8_t discard_memory[sizeof(boot_rom)];
-    swap_memory(output_block, discard_memory, sizeof(output_block), 0, gameboy);
+    if (!swap_memory(output_block, discard_memory, sizeof(output_block), 0,
+                     gameboy)) {
+        return false;
+    }
 
     return true;
 }
