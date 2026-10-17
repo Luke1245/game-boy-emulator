@@ -6,11 +6,13 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "../include/mmu.h"
+
 bool initialise_gameboy(gb_t* gameboy, char* rom_name) {
     memset(gameboy, 0, sizeof *gameboy);
 
     // Embed boot rom into file, covers the first 256 bytes of memory
-    const uint8_t boot_rom[] = {
+    uint8_t boot_rom[] = {
         0x31, 0xfe, 0xff, 0xaf, 0x21, 0xff, 0x9f, 0x32, 0xcb, 0x7c, 0x20, 0xfb,
         0x21, 0x26, 0xff, 0x0e, 0x11, 0x3e, 0x80, 0x32, 0xe2, 0x0c, 0x3e, 0xf3,
         0xe2, 0x32, 0x3e, 0x77, 0x77, 0x3e, 0xfc, 0xe0, 0x47, 0x11, 0x04, 0x01,
@@ -34,9 +36,8 @@ bool initialise_gameboy(gb_t* gameboy, char* rom_name) {
         0xf5, 0x06, 0x19, 0x78, 0x86, 0x23, 0x05, 0x20, 0xfb, 0x86, 0x20, 0xfe,
         0x3e, 0x01, 0xe0, 0x50};
 
-    // TODO: FIX, boot ROM actually overwrites first 256 bytes of loaded ROM
-    memcpy(gameboy->memory, boot_rom, sizeof(boot_rom));
     gameboy->rom_name = rom_name;
+    gameboy->state = BOOTING;
 
     // Could be done with just passing gameboy but specifying rom_name arg makes
     // it more readable
@@ -44,35 +45,19 @@ bool initialise_gameboy(gb_t* gameboy, char* rom_name) {
         return false;
     }
 
-    return true;
-}
-
-bool load_rom(gb_t* gameboy, char* rom_name) {
-    FILE* file_pointer = fopen(rom_name, "rb");
-
-    if (file_pointer == NULL) {
-        printf("File not found\n");
+    uint8_t output_block[sizeof(boot_rom)] = {0};
+    if (!swap_memory(boot_rom, output_block, sizeof(boot_rom), 0, gameboy)) {
         return false;
     }
 
-    fseek(file_pointer, 0L, SEEK_END);
-    long size = ftell(file_pointer);
-    fseek(file_pointer, 0L, SEEK_SET);
-
-    // TODO: FIX, boot ROM actually overwrites first 256 bytes of loaded ROM
-    if (!fread(gameboy->memory + 256, size, 1, file_pointer)) {
-        printf("Unable to read ROM into memory\n");
-        fclose(file_pointer);
+    uint8_t discard_memory[sizeof(boot_rom)];
+    if (!swap_memory(output_block, discard_memory, sizeof(output_block), 0,
+                     gameboy)) {
         return false;
     }
 
-    fclose(file_pointer);
-
-    printf("ROM loaded\n");
-
     return true;
 }
-
 void combine_registers(uint8_t* registers[], combreg_t reg, gb_t* gameboy) {
     // Gameboy treats two 8-bit registers as one 16-bit register for some
     // operations

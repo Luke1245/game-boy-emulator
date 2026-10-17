@@ -13,6 +13,8 @@
 
 typedef enum { AF, BC, DE, HL } combreg_t;
 
+typedef enum { BOOTING, RUNNING, PAUSED } state_t;
+
 typedef struct {
     uint8_t a;
     uint8_t b;
@@ -27,14 +29,12 @@ typedef struct {
 typedef struct {
     registers_t registers;
     uint16_t pc;
-    // Temporary memory increase for tests
-    // TODO: FIX
-    uint8_t memory[0xFFFFF];
+    uint8_t memory[0xFFFF];
     char* rom_name;
+    state_t state;
 } gb_t;
 
 bool initialise_gameboy(gb_t* gameboy, char* rom_name);
-bool load_rom(gb_t* gameboy, char* rom_name);
 void combine_registers(uint8_t* registers[], combreg_t reg, gb_t* gameboy);
 uint16_t get_combined_register(combreg_t reg, gb_t* gameboy);
 bool set_combined_register(combreg_t reg, gb_t* gameboy, uint16_t value);

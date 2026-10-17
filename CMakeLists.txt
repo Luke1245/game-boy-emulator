@@ -34,6 +34,7 @@ add_executable(gameboy
     src/cpu.c
     src/config.c
     src/platform.c
+    src/mmu.c
 )
 
 target_include_directories(gameboy
@@ -52,6 +53,7 @@ enable_testing()
 add_executable(test_cpu
     tests/test_cpu.c
     src/cpu.c
+    src/mmu.c
 )
 
 target_include_directories(test_cpu
