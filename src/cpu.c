@@ -12,7 +12,7 @@ bool initialise_gameboy(gb_t* gameboy, char* rom_name) {
     memset(gameboy, 0, sizeof *gameboy);
 
     // Embed boot rom into file, covers the first 256 bytes of memory
-    const uint8_t boot_rom[] = {
+    uint8_t boot_rom[] = {
         0x31, 0xfe, 0xff, 0xaf, 0x21, 0xff, 0x9f, 0x32, 0xcb, 0x7c, 0x20, 0xfb,
         0x21, 0x26, 0xff, 0x0e, 0x11, 0x3e, 0x80, 0x32, 0xe2, 0x0c, 0x3e, 0xf3,
         0xe2, 0x32, 0x3e, 0x77, 0x77, 0x3e, 0xfc, 0xe0, 0x47, 0x11, 0x04, 0x01,
@@ -36,7 +36,6 @@ bool initialise_gameboy(gb_t* gameboy, char* rom_name) {
         0xf5, 0x06, 0x19, 0x78, 0x86, 0x23, 0x05, 0x20, 0xfb, 0x86, 0x20, 0xfe,
         0x3e, 0x01, 0xe0, 0x50};
 
-    // TODO: FIX, boot ROM actually overwrites first 256 bytes of loaded ROM
     gameboy->rom_name = rom_name;
     gameboy->state = BOOTING;
 
@@ -46,7 +45,11 @@ bool initialise_gameboy(gb_t* gameboy, char* rom_name) {
         return false;
     }
 
-    memcpy(gameboy->memory, boot_rom, sizeof(boot_rom));
+    uint8_t output_block[sizeof(boot_rom)] = {0};
+    swap_memory(boot_rom, output_block, sizeof(boot_rom), 0, gameboy);
+
+    uint8_t discard_memory[sizeof(boot_rom)];
+    swap_memory(output_block, discard_memory, sizeof(output_block), 0, gameboy);
 
     return true;
 }
