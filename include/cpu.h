@@ -29,9 +29,7 @@ typedef struct {
 typedef struct {
     registers_t registers;
     uint16_t pc;
-    // Temporary memory increase for tests
-    // TODO: FIX
-    uint8_t memory[0xFFFFF];
+    uint8_t memory[0xFFFF];
     char* rom_name;
     state_t state;
 } gb_t;

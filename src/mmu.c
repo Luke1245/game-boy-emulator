@@ -10,15 +10,23 @@ bool load_rom(gb_t* gameboy, char* rom_name) {
     FILE* file_pointer = fopen(rom_name, "rb");
 
     if (file_pointer == NULL) {
-        printf("File not found\n");
+        printf("File %s not found\n", rom_name);
         return false;
     }
 
     fseek(file_pointer, 0L, SEEK_END);
-    long size = ftell(file_pointer);
+    int rom_size = ftell(file_pointer);
+    int gb_memory_size = sizeof(gameboy->memory) + 1;
+
+    if (rom_size == 0 || rom_size > gb_memory_size) {
+        printf("File %s is an invalid size (%i)\n", rom_name, rom_size);
+        fclose(file_pointer);
+        return false;
+    }
+
     fseek(file_pointer, 0L, SEEK_SET);
 
-    if (!fread(gameboy->memory, size, 1, file_pointer)) {
+    if (!fread(gameboy->memory, rom_size, 1, file_pointer)) {
         printf("Unable to read ROM into memory\n");
         fclose(file_pointer);
         return false;
